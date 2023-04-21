@@ -63,38 +63,32 @@ svg {
     margin: 5px;
 }
 
-.container {
-    display: flex;
-
-    margin-top: 100px;
-    margin-left: 150px;
-    gap: 10px;
-    margin-right: 75px;
-}
-
 img {
-    height: 350px;
-    width: 250px;
+    height: 150px;
+    width: 150px;
 }
 
-.content {
+.anime-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    margin-left: 150px;
+    margin-top: 75px;
+}
+
+.anime-box {
+    display: flex;
+    gap: 25px;
+}
+
+.anime-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .anime-name {
-    font-size: 2.5rem;
-    font-weight: 800;
+    font-size: 2rem;
+    font-weight: 600;
 }
-
-.watch-now {    
-    margin-top: 40px;
-    width: 150px;
-    height: 40px;
-    border-radius: 30px;
-    font-size: 1.25rem;
-    background-color: #cae962;
-}
-
 
