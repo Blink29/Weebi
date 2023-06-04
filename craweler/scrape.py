@@ -7,8 +7,6 @@ with open("valid_proxies.txt", "r") as f:
     for proxy in proxies:
         proxy_list.append(proxy)
 
-print(proxy_list)
-
 def get_anime_links(page_no):
     source_list = requests.get(f"https://gogoanime.cl/anime-list.html?page={page_no}", proxies = {"http": proxies, "https": proxies}).text
     soup_anime_list = BeautifulSoup(source_list, 'lxml')
