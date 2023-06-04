@@ -16,7 +16,7 @@ def scrape_anime_link(anime_link):
         "anime_name": anime_name,
         "iframe_links": iframe_links
     }
-    
+
     insert_document(document)
 
 PAGE = 1
