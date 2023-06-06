@@ -1,24 +1,51 @@
 from bs4 import BeautifulSoup
 import requests
+import random
 
-proxy_list=[]
-with open("valid_proxies.txt", "r") as f:
-    proxies = f.read().split("\n")
-    for proxy in proxies:
-        proxy_list.append(proxy)
+def get_proxy_list():
+    proxy_list = []
+    with open("proxy_list.txt", "r") as f:
+        proxies = f.read().split("\n")
+        for proxy in proxies:
+            proxy_list.append(proxy)
+    return proxy_list
 
 def get_anime_links(page_no):
-    source_list = requests.get(f"https://gogoanime.cl/anime-list.html?page={page_no}", proxies = {"http": proxies, "https": proxies}).text
-    soup_anime_list = BeautifulSoup(source_list, 'lxml')
-    anime_list = soup_anime_list.find('div', class_="anime_list_body")
+    while True:
+        try:
+            proxy_list = get_proxy_list()
+            random_proxy = random.choice(proxy_list)
+            print(random_proxy)
+            request = requests.get("https://gogoanime.cl/anime-list.html", proxies={
+                "http": random_proxy,
+                "https": random_proxy
+            })
+            source_list = request.text
+            soup_anime_list = BeautifulSoup(source_list, 'lxml')
+            anime_list = soup_anime_list.find('div', class_="anime_list_body")
+            
+            if anime_list is None:
+                raise TypeError("anime_list is none type")
 
-    links = []
-    for anime_links in anime_list.find_all('a'):
-        anime_link = anime_links['href']
-        link = f"https://gogoanime.cl{anime_link}"
-        links.append(link)
+            links = []
+            for anime_links in anime_list.find_all('a'):
+                anime_link = anime_links['href']
+                link = f"https://gogoanime.cl{anime_link}"
+                links.append(link)
 
-    return links
+            return links
+        
+        except requests.exceptions.ProxyError:
+            print("[-] Proxy error, trying again...")
+            continue
+
+        except requests.exceptions.ConnectionError:
+            print("[-] Connection error, trying again...")
+            continue
+
+        except TypeError:
+            print("[-] anime_list was empty")
+            continue
 
 def get_anime_id_from_anime_link(anime_link):
     source = requests.get(anime_link).text

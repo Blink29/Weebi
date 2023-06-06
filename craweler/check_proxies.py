@@ -1,28 +1,33 @@
 import threading
-import queue
 import requests
 
-q = queue.Queue()
-valid_proxies = []
+def get_proxy_list():
+    proxy_list = []
+    with open("proxy_list.txt", "r") as f:
+        proxies = f.read().split("\n")
+        for proxy in proxies:
+            proxy_list.append(proxy)
+    return proxy_list
 
-with open("proxy_list.txt", "r") as f:
-    proxies = f.read().split("\n")
-    for p in proxies:
-        q.put(p)
+def register_proxy(proxy):
+    file = open("valid_proxies.txt", "a")
+    file.write(f"{proxy} \n")
+    file.close()
 
-def check_proxies():
-    global q
-    while not q.empty():
-        proxy = q.get()
-        try:
-            res = requests.get("http://ipinfo.io/json", proxies={
-                "http": proxy,
-                "https": proxy
-            })
-        except:
-            continue
-        if res.status_code == 200:
-            print(proxy)
+def check_proxies(proxy):
+    try:
+        requests.get("https://gogoanime.cl/anime-list.html", proxies={
+            "http": proxy,
+            "https": proxy
+        })
+        print(f"[+] {proxy} is valid")
+        register_proxy(proxy)
+        return True
+    except:
+        print(f"[-] {proxy} is not valid")
+        return False
 
-for _ in range(10):
-    threading.Thread(target=check_proxies).start()
+proxy_list = get_proxy_list()
+for proxy in proxy_list:
+    thread = threading.Thread(target=check_proxies, args=(proxy,))
+    thread.start()
