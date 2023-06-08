@@ -23,18 +23,11 @@ PAGE = 1
 
 anime_links = get_anime_links(1)
 
-counter = 0
-
 threads = []
 for anime_link in anime_links:
-    counter += 1
-    if counter == 10:
-        break
     thread = threading.Thread(target=scrape_anime_link, args=(anime_link,))
     thread.start()
     threads.append(thread)
-
-print("hello world")
 
 for thread in threads:
     thread.join()
