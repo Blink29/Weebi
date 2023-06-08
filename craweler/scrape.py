@@ -13,13 +13,10 @@ def get_proxy_list():
 def get_anime_links(page_no):
     while True:
         try:
-            proxy_list = get_proxy_list()
-            random_proxy = random.choice(proxy_list)
-            print(random_proxy)
-            request = requests.get("https://gogoanime.cl/anime-list.html", proxies={
-                "http": random_proxy,
-                "https": random_proxy
-            })
+            # proxy_list = get_proxy_list()
+            # random_proxy = random.choice(proxy_list)
+            # print(random_proxy)
+            request = requests.get(f"https://gogoanime.cl/anime-list.html?page={page_no}")
             source_list = request.text
             soup_anime_list = BeautifulSoup(source_list, 'lxml')
             anime_list = soup_anime_list.find('div', class_="anime_list_body")
@@ -47,6 +44,19 @@ def get_anime_links(page_no):
             print("[-] anime_list was empty")
             continue
 
+def get_total_anime_links():
+    total_links = []
+    PAGE_NO = 1
+    while (PAGE_NO < 4):
+        total_anime_links = get_anime_links(PAGE_NO)
+        PAGE_NO = PAGE_NO + 1
+        total_links.append(total_anime_links)
+    
+    return total_links
+
+
+print(get_total_anime_links())
+    
 def get_anime_id_from_anime_link(anime_link):
     source = requests.get(anime_link).text
     soup = BeautifulSoup(source, 'lxml')
@@ -80,3 +90,14 @@ def extract_iframe_from_episode(episode_link):
     vid_src = iframe["src"]
     return vid_src
 
+def get_anime_summary(anime_link):
+    source = requests.get(anime_link).text
+    soup = BeautifulSoup(source, 'lxml')
+    plot_summary_span = soup.find('span', string="Plot Summary: ")
+    if plot_summary_span:
+        anime_summary = plot_summary_span.parent.text.strip()
+        anime_summary = anime_summary.replace("Plot Summary: ", "")
+    else:
+        anime_summary = "Plot summary not found."
+
+    return anime_summary

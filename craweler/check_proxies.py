@@ -3,14 +3,14 @@ import requests
 
 def get_proxy_list():
     proxy_list = []
-    with open("proxy_list.txt", "r") as f:
+    with open("/Users/paurushkumar/Desktop/Project Weebi/craweler/free_proxy.txt", "r") as f:
         proxies = f.read().split("\n")
         for proxy in proxies:
             proxy_list.append(proxy)
     return proxy_list
 
 def register_proxy(proxy):
-    file = open("valid_proxies.txt", "a")
+    file = open("/Users/paurushkumar/Desktop/Project Weebi/craweler/valid_proxies.txt", "a")
     file.write(f"{proxy} \n")
     file.close()
 
