@@ -4,6 +4,7 @@ import axios from "axios";
 import AnimeCard from "./components/AnimeCard/AnimeCard";
 
 interface Anime {
+  _id: string;
   anime_name: string;
   iframe_links: string[];
 }
@@ -13,15 +14,23 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/anime_list")
-      .then((response) => setAnimeList(response.data.anime_list))
+      .get("http://localhost:9000/api/anime_list")
+      .then((response) => {
+        const fetchedAnimeList = response.data;
+        if (Array.isArray(fetchedAnimeList)) {
+          setAnimeList(fetchedAnimeList);
+        } else {
+          console.error("Invalid data structure received:", response.data);
+        }
+      })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
   return (
-    <div>
-      <h1>Anime List</h1>
+<div>
+    <h1>Anime List</h1>
 
-      {animeList.map((anime) => (
+    {animeList ? (
+      animeList.map((anime) => (
         <div key={anime.anime_name}>
           <div>{anime.anime_name}</div>
 
@@ -36,8 +45,11 @@ function App() {
             </div>
           ))}
         </div>
-      ))}
-    </div>
+      ))
+    ) : (
+      <p>Loading...</p>
+    )}
+  </div>
   );
 }
 
