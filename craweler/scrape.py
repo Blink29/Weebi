@@ -90,7 +90,7 @@ def extract_iframe_from_episode(episode_link):
     vid_src = iframe["src"]
     return vid_src
 
-def get_anime_summary(anime_link):
+def get_anime_info(anime_link):
     source = requests.get(anime_link).text
     soup = BeautifulSoup(source, 'lxml')
     plot_summary_span = soup.find('span', string="Plot Summary: ")
