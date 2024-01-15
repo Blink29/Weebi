@@ -68,17 +68,17 @@ def get_episode_num(anime_link):
     return ep_num
 
 
-def get_episode_links(anime_link):
-    anime_id = get_anime_id_from_anime_link(anime_link)
-    ep_num = get_episode_num(anime_link)
-    endpoint = f"https://ajax.gogo-load.com/ajax/load-list-episode?ep_start=0&ep_end={ep_num}&id={anime_id}"
-    source_code = requests.get(endpoint)
-    soup = BeautifulSoup(source_code.text, "lxml")
-    episodes = [
-        "https://ww1.gogoanimes.fi/" + element["href"].strip()
-        for element in soup.find_all("a")
-    ]
-    return episodes
+# def get_episode_links(anime_link):
+#     anime_id = get_anime_id_from_anime_link(anime_link)
+#     ep_num = get_episode_num(anime_link)
+#     endpoint = f"https://ajax.gogo-load.com/ajax/load-list-episode?ep_start=0&ep_end={ep_num}&id={anime_id}"
+#     source_code = requests.get(endpoint)
+#     soup = BeautifulSoup(source_code.text, "lxml")
+#     episodes = [
+#         "https://ww1.gogoanimes.fi/" + element["href"].strip()
+#         for element in soup.find_all("a")
+#     ]
+#     return episodes
 
 
 def get_anime_name(anime_link):
@@ -93,6 +93,16 @@ def extract_iframe_from_episode(episode_link):
     iframe = soup.find("iframe")
     vid_src = iframe["src"]
     return vid_src
+
+
+@exception_handler
+def get_episode_links(anime_list):
+    source = requests.get(anime_list).text
+    soup = BeautifulSoup(source, "lxml")
+    episodes = soup.find("div", id="load_ep")
+    episodes = episodes.find_all("a")
+    episodes = [BASE_URL + episode["href"] for episode in episodes]
+    return episodes
 
 
 @exception_handler
