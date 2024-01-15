@@ -14,7 +14,7 @@ anime_link = "https://ww4.gogoanime2.org/anime/oshi-no-ko-dub"
 # request = requests.get(anime_link)
 # print(request.text)
 
-# result = get_anime_info(anime_link)
-result = get_episode_links(anime_link)
+result = get_anime_info(anime_link)
+# result = get_episode_links(anime_link)
 
 pprint(result)

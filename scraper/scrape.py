@@ -96,16 +96,6 @@ def extract_iframe_from_episode(episode_link):
 
 
 @exception_handler
-def get_episode_links(anime_list):
-    source = requests.get(anime_list).text
-    soup = BeautifulSoup(source, "lxml")
-    episodes = soup.find("div", id="load_ep")
-    episodes = episodes.find_all("a")
-    episodes = [BASE_URL + episode["href"] for episode in episodes]
-    return episodes
-
-
-@exception_handler
 def get_anime_info(anime_link):
     source = requests.get(anime_link).text
     soup = BeautifulSoup(source, "lxml")
@@ -171,6 +161,14 @@ def get_anime_info(anime_link):
     else:
         anime_title = None
 
+    episodes = soup.find("div", id="load_ep")
+    if episodes:
+        episodes = episodes.find_all("a")
+        episodes = [BASE_URL + episode["href"] for episode in episodes]
+        episodes = random.sample(episodes, 5)
+    else:
+        episodes = []
+
     anime_info = {
         "title": anime_title,
         "image": anime_img,
@@ -180,6 +178,7 @@ def get_anime_info(anime_link):
         "release": anime_release,
         "status": anime_status,
         "other_names": anime_other_name,
+        "episodes": episodes,
     }
 
     return anime_info
