@@ -95,14 +95,81 @@ def extract_iframe_from_episode(episode_link):
     return vid_src
 
 
+@exception_handler
 def get_anime_info(anime_link):
     source = requests.get(anime_link).text
     soup = BeautifulSoup(source, "lxml")
-    plot_summary_span = soup.find("span", string="Plot Summary: ")
-    if plot_summary_span:
-        anime_summary = plot_summary_span.parent.text.strip()
+
+    anime_summary = soup.find("span", string="Plot Summary: ")
+    if anime_summary:
+        anime_summary = anime_summary.parent.text.strip()
         anime_summary = anime_summary.replace("Plot Summary: ", "")
     else:
-        anime_summary = "Plot summary not found."
+        anime_summary = None
 
-    return anime_summary
+    anime_type = soup.find("span", string="Type: ")
+    if anime_type:
+        anime_type = anime_type.parent.text.strip()
+        anime_type = anime_type.replace("Type: ", "")
+        anime_type = anime_type.replace("\n", "")
+    else:
+        anime_type = None
+
+    anime_genre = soup.find("span", string="Genre: ")
+    if anime_genre:
+        anime_genre = anime_genre.parent.text.strip()
+        anime_genre = anime_genre.replace("Genre: ", "")
+        anime_genre = anime_genre.split(",")
+        anime_genre = [genre.strip() for genre in anime_genre]
+    else:
+        anime_genre = None
+
+    anime_release = soup.find("span", string="Released: ")
+    if anime_release:
+        anime_release = anime_release.parent.text.strip()
+        anime_release = anime_release.replace("Released: ", "")
+    else:
+        anime_release = None
+
+    anime_status = soup.find("span", string="Status: ")
+    if anime_status:
+        anime_status = anime_status.parent.text.strip()
+        anime_status = anime_status.replace("Status: ", "")
+        anime_status = anime_status.replace("\n", "")
+    else:
+        anime_status = None
+
+    anime_other_name = soup.find("span", string="Other name: ")
+    if anime_other_name:
+        anime_other_name = anime_other_name.parent.text.strip()
+        anime_other_name = anime_other_name.replace("Other name: ", "")
+        anime_other_name = anime_other_name.split("/")
+        anime_other_name = [name.strip() for name in anime_other_name]
+
+    else:
+        anime_other_name = None
+
+    anime_img = soup.find("div", class_="anime_info_body_bg")
+    if anime_img:
+        anime_img = BASE_URL + anime_img.find("img")["src"]
+    else:
+        anime_img = None
+
+    anime_title = soup.find("div", class_="anime_info_body_bg")
+    if anime_title:
+        anime_title = anime_title.find("h1").text.strip()
+    else:
+        anime_title = None
+
+    anime_info = {
+        "title": anime_title,
+        "image": anime_img,
+        "summary": anime_summary,
+        "type": anime_type,
+        "genre": anime_genre,
+        "release": anime_release,
+        "status": anime_status,
+        "other_names": anime_other_name,
+    }
+
+    return anime_info
