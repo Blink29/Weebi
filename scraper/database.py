@@ -15,6 +15,8 @@ class Database:
         if not self._connect():
             raise Exception("Could not connect to MongoDB")
 
+        print("[+] Connected to MongoDB")
+
     def _connect(self):
         try:
             conn = MongoClient(self.MONGO_URI, server_api=ServerApi("1"))
@@ -24,7 +26,7 @@ class Database:
             return False
 
     def insert(self, document):
-        self.colleciton.insert_one(document)
+        self.collection.insert_one(document)
         print(f"[+] One document inserted in database | counter : {self.counter}")
         self.counter += 1
         return True

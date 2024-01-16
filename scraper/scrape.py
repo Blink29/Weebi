@@ -4,6 +4,7 @@ import random
 from utils import exception_handler
 from tqdm import tqdm
 import json
+from database import Database
 
 
 BASE_URL = "https://ww4.gogoanime2.org"
@@ -14,10 +15,29 @@ class GogoAnimeScraper:
         self.PROGRESS_FILE_NAME = "progress.txt"
         self.anime_links = []
         self.complete_index = -1
+        self.database = Database()
 
         if not self._load_progress():
             self._load_anime_links()
             self._save_progress()
+
+    def loading_loop(self):
+        while True:
+            if self.complete_index == len(self.anime_links) - 1:
+                print("[+] Scraping complete")
+                break
+            self._load_next_anime()
+
+    def _load_next_anime(self):
+        print("[*] Loading next anime...")
+        self.complete_index += 1
+        anime_link = self.anime_links[self.complete_index]
+        anime_info = self._get_anime_info(anime_link)
+        self.database.insert(anime_info)
+        self._save_progress()
+        anime_name = anime_info["title"]
+        print(f"[+] {anime_name} added to database | INDEX = {self.complete_index}")
+        return True
 
     def _load_progress(self):
         try:
@@ -40,6 +60,7 @@ class GogoAnimeScraper:
     def _load_anime_links(self):
         page_count = 1
         while True:
+            print(f"[*] Loading Anime Links | Page : {page_count}")
             buffered_anime_links = self._get_page_anime_links(page_count)
             if not buffered_anime_links:
                 break
