@@ -68,17 +68,18 @@ def get_episode_num(anime_link):
     return ep_num
 
 
-# def get_episode_links(anime_link):
-#     anime_id = get_anime_id_from_anime_link(anime_link)
-#     ep_num = get_episode_num(anime_link)
-#     endpoint = f"https://ajax.gogo-load.com/ajax/load-list-episode?ep_start=0&ep_end={ep_num}&id={anime_id}"
-#     source_code = requests.get(endpoint)
-#     soup = BeautifulSoup(source_code.text, "lxml")
-#     episodes = [
-#         "https://ww1.gogoanimes.fi/" + element["href"].strip()
-#         for element in soup.find_all("a")
-#     ]
-#     return episodes
+@exception_handler
+def get_episode_links(anime_link):
+    anime_id = get_anime_id_from_anime_link(anime_link)
+    ep_num = get_episode_num(anime_link)
+    endpoint = f"https://ajax.gogo-load.com/ajax/load-list-episode?ep_start=0&ep_end={ep_num}&id={anime_id}"
+    source_code = requests.get(endpoint)
+    soup = BeautifulSoup(source_code.text, "lxml")
+    episodes = [
+        "https://ww1.gogoanimes.fi/" + element["href"].strip()
+        for element in soup.find_all("a")
+    ]
+    return episodes
 
 
 def get_anime_name(anime_link):
@@ -161,13 +162,10 @@ def get_anime_info(anime_link):
     else:
         anime_title = None
 
-    episodes = soup.find("div", id="load_ep")
-    if episodes:
-        episodes = episodes.find_all("a")
-        episodes = [BASE_URL + episode["href"] for episode in episodes]
-        episodes = random.sample(episodes, 5)
-    else:
-        episodes = []
+    episode_page = soup.find("div", class_="anime_video_body")
+    episodes = episode_page.find("ul", id="episode_related")
+    episodes = episodes.find_all("li")
+    episodes = [BASE_URL + episode.find("a")["href"] for episode in episodes]
 
     anime_info = {
         "title": anime_title,
