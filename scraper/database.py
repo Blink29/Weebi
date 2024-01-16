@@ -5,26 +5,26 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-uri = os.getenv("MONGO_URI")
 
-try:
-    conn = MongoClient(uri, server_api=ServerApi("1"))
-    print("Connected successfully!!!")
-except:
-    print("Could not connect to MongoDB")
+class Database:
+    def __init__(self):
+        self.MONGO_URI = os.getenv("MONGO_URI")
+        self.collection = None
+        self.counter = 1
 
-# database
-db = conn.anime_list
+        if not self._connect():
+            raise Exception("Could not connect to MongoDB")
 
-# Created or Switched to collection names: my_gfg_collection
-collection = db.anime_list
+    def _connect(self):
+        try:
+            conn = MongoClient(self.MONGO_URI, server_api=ServerApi("1"))
+            self.collection = conn.anime_list.anime_list
+            return True
+        except:
+            return False
 
-COUNTER = 0
-
-
-def insert_document(document):
-    global COUNTER
-    COUNTER += 1
-    collection.insert_one(document)
-    print(f"[+] One document inserted in database | counter : {COUNTER}")
-    return True
+    def insert(self, document):
+        self.colleciton.insert_one(document)
+        print(f"[+] One document inserted in database | counter : {self.counter}")
+        self.counter += 1
+        return True
