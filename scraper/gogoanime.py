@@ -7,7 +7,7 @@ import json
 from database import Database
 
 
-BASE_URL = "https://ww4.gogoanime2.org"
+BASE_URL = "https://ww2.gogoanimes.fi"
 
 
 class GogoAnimeScraper:
@@ -74,7 +74,7 @@ class GogoAnimeScraper:
 
     @exception_handler
     def _get_page_anime_links(self, page_no):
-        request = requests.get(f"{BASE_URL}/animelist/all/{page_no}")
+        request = requests.get(f"{BASE_URL}/anime-list.html?page={page_no}")
         source_list = request.text
         soup_anime_list = BeautifulSoup(source_list, "lxml")
         anime_list = soup_anime_list.find("div", class_="anime_list_body")
@@ -173,10 +173,17 @@ class GogoAnimeScraper:
 
         # Episodes
         print("[*] Extracting anime episodes...")
-        episode_page = soup.find("div", class_="anime_video_body")
-        episodes = episode_page.find("ul", id="episode_related")
-        episodes = episodes.find_all("li")
-        episodes = [BASE_URL + episode.find("a")["href"] for episode in episodes]
+        anime_id = soup.find('input' ,class_="movie_id")['value']
+        ep_num = soup.find('a', class_='active')['ep_end']
+        endpoint = f"https://ajax.gogo-load.com/ajax/load-list-episode?ep_start=0&ep_end={ep_num}&id={anime_id}"
+        source_code = requests.get(endpoint)
+        ajax_soup = BeautifulSoup(source_code.text, 'lxml')
+        episodes = [ BASE_URL + element["href"].strip() for element in ajax_soup.find_all('a') ]
+
+        # episode_page = soup.find("div", class_="anime_video_body")
+        # episodes = episode_page.find("ul", id="episode_page")
+        # episodes = episodes.find_all("li")
+        # episodes = [BASE_URL + episode.find("a")["href"] for episode in episodes]
 
         episode_player_links = []
         for episode_link in tqdm(episodes):
