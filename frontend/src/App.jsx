@@ -5,8 +5,8 @@ import './App.css'
 
 import axios from 'axios'
 
-import AnimeCard from './ components/AnimeCard'
-import AnimeDetails from './ components/AnimeDetails'
+import AnimeCard from './components/AnimeCard'
+import AnimeDetails from './components/AnimeDetails'
 
 function App() {
   const [animeList, setAnimeList] = useState([])
@@ -15,7 +15,7 @@ function App() {
     const fetchAnimeList = async () => {
       const res = await axios.get('http://localhost:9000/api/anime_list')
       setAnimeList(res.data)
-      // console.log(res.data)
+      console.log(res.data)
     }
     fetchAnimeList();
   }, [animeList])

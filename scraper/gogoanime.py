@@ -12,7 +12,7 @@ BASE_URL = "https://ww2.gogoanimes.fi"
 
 class GogoAnimeScraper:
     def __init__(self):
-        self.PROGRESS_FILE_NAME = "progress.txt"
+        self.PROGRESS_FILE_NAME = "progress2.txt"
         self.anime_links = []
         self.complete_index = -1
         self.database = Database()
@@ -179,11 +179,6 @@ class GogoAnimeScraper:
         source_code = requests.get(endpoint)
         ajax_soup = BeautifulSoup(source_code.text, 'lxml')
         episodes = [ BASE_URL + element["href"].strip() for element in ajax_soup.find_all('a') ]
-
-        # episode_page = soup.find("div", class_="anime_video_body")
-        # episodes = episode_page.find("ul", id="episode_page")
-        # episodes = episodes.find_all("li")
-        # episodes = [BASE_URL + episode.find("a")["href"] for episode in episodes]
 
         episode_player_links = []
         for episode_link in tqdm(episodes):

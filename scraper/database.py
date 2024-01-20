@@ -4,8 +4,6 @@ from pymongo.server_api import ServerApi
 from dotenv import load_dotenv
 
 load_dotenv()
-
-
 class Database:
     def __init__(self):
         self.MONGO_URI = os.getenv("MONGO_URI")

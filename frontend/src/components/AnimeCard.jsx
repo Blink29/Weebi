@@ -6,6 +6,7 @@ import CardImg from "../assets/images/demonslayerCard.jpeg";
 const AnimeCard = ({ animeList }) => {
   return (
     <div>
+      hello
       {animeList.map((anime) => (
         <div key={anime._id}>
           <Link to={`/anime/${encodeURIComponent(anime.anime_name)}`}>{anime.anime_name}</Link>

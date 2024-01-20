@@ -6,7 +6,6 @@ const app = express();
 
 const PORT = process.env.PORT || 9000;
 
-const uri = "mongodb+srv://purukumar2905:puru2905@cluster0.qasxs3n.mongodb.net/anime_list?retryWrites=true&w=majority"
 
 const connectDb = async () => {
     await mongoose.connect(uri, {
