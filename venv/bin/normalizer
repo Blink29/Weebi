@@ -1,6 +1,4 @@
-#!/bin/sh
-'''exec' "/Users/paurushkumar/Desktop/Project Weebi/venv/bin/python3.11" "$0" "$@"
-' '''
+#!/Users/paurushkumar/Desktop/Weebi/venv/bin/python3.11
 # -*- coding: utf-8 -*-
 import re
 import sys
