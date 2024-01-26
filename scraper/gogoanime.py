@@ -9,7 +9,7 @@ from database import Database
 
 BASE_URL = "https://ww2.gogoanimes.fi"
 
-
+ 
 class GogoAnimeScraper:
     def __init__(self):
         self.PROGRESS_FILE_NAME = "progress2.txt"
@@ -206,5 +206,7 @@ class GogoAnimeScraper:
         source = requests.get(episode_link)
         soup = BeautifulSoup(source.text, "lxml")
         iframe = soup.find("iframe")
+        # if iframe is None:
+        #     return None
         vid_src = iframe["src"]
         return vid_src
