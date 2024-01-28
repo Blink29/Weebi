@@ -4,9 +4,11 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 
 import axios from 'axios'
+import AnimeCard from './components/anime-card/card'
+import AnimeDetails from './components/anime-details/details'
+import StreamingPage from './components/streaming-page/stream'
+import Header from './components/header/header'
 
-import AnimeCard from './components/AnimeCard'
-import AnimeDetails from './components/AnimeDetails'
 
 function App() {
   const [animeList, setAnimeList] = useState([])
@@ -23,8 +25,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<AnimeCard animeList={animeList} />} />
-        <Route path="/anime/:animeName" element={<AnimeDetails animeList={animeList}/>} />
+        <Route path="/" element={<Header />} />
+        {/* <Route path="/anime/:animeName" element={<AnimeDetails animeList={animeList}/>} /> */}
       </Routes>
     </BrowserRouter>
   )

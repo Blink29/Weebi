@@ -1,0 +1,41 @@
+.header {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+
+    .weebi {
+        font-size: 3rem;
+        color: white;
+        font-weight: 800;
+
+        .dot {
+            color: #7C8EA0;
+            font-size: 4rem;
+        }
+    }
+
+    .search {
+        position: relative;
+        display: inline-block;
+        margin-top: 10px;
+
+
+        .search-bar {
+            width: 300px;
+            height: 30px;
+            outline: none;
+            border-radius: 20px;
+            padding: 0 10px;
+
+        }
+        .search-icon {
+            position: absolute;
+            right: 10px;
+            top: 5px;
+        }
+    }
+
+
+}

@@ -1,0 +1,21 @@
+.streaming-page {
+    display: flex;
+    min-height: 100vh;
+    // align-items: center;
+    margin-top: 50px;
+    justify-content: center;
+    gap:15px;
+
+    .ep-list {
+        background-color: white;
+        height: 200px;
+        font-size: 1.25rem;
+        width: 250px;
+    }
+
+    .streaming-screen {
+        height: 600px;
+        width: 800px;
+        background-color: white;
+    }
+}
