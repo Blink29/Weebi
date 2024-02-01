@@ -26,7 +26,7 @@ app.get('/api/anime_list', async (req, res) => {
       const { sortBy, sortOrder, limit } = req.query;
   
       const query = animeListCollection.find({})
-        .sort({ [sortBy]: sortOrder === 'desc' ? -1 : 1 }) // -1 for descending, 1 for ascending
+        .sort({ [sortBy]: sortOrder === 'desc' ? -1 : 1 })
         .limit(parseInt(limit, 10));
   
       const allAnime = await query.toArray();
@@ -36,6 +36,30 @@ app.get('/api/anime_list', async (req, res) => {
       res.status(500).send('Internal Server Error');
     }
   });
+
+  app.use('/api/searched_anime', async (req, res) => {
+    try {
+      const { anime_name } = req.body;
+      console.log(anime_name)
+  
+      if (!anime_name) {
+        return res.status(400).json({ error: 'Missing anime_name parameter' });
+      }
+  
+      const regex = new RegExp(anime_name, 'i');
+      const searchResults = await animeListCollection.find({
+        $or: [
+          { title: regex },
+          { other_names: regex },
+        ],
+      }).toArray();
+  
+      res.status(200).json(searchResults);
+    } catch (error) {
+      console.error('Error during search:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  })
 
 db.once('open', async() => {
     console.log('MongoDB database connection established successfully!');

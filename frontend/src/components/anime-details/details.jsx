@@ -1,14 +1,28 @@
+import { useEffect, useState } from 'react';
 import './details.scss'
 
 import { useNavigate, useParams } from 'react-router-dom'
 
 const AnimeDetails = ({animeList}) => {
+  const [currentAnime, setCurrentAnime] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); 
   const {animeTitle} = useParams()
   const navigate = useNavigate();
 
-  const currentAnime = animeList.find(anime => anime.title.replace(/-/g, " ") === decodeURIComponent(animeTitle.replace(/-/g, " ")))
+  useEffect(() => {
+    const get_currentAnime = async () => {
+      const response = await animeList.find(anime => anime.title.replace(/-/g, " ") === decodeURIComponent(animeTitle.replace(/-/g, " ")))
+      setCurrentAnime(response)
+      localStorage.setItem("currentAnime", JSON.stringify(response))
+      setIsLoading(false)
+    }
+    get_currentAnime()
 
-  console.log(currentAnime)
+  }, [animeList, animeTitle])
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   const imgUrl = currentAnime.image
   const img = imgUrl.split("https")

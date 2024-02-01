@@ -17,7 +17,6 @@ const StreamingPage = ({ animeList }) => {
             .episode_num === animeTitleEp
       );
       setCurrentAnime(response);
-      console.log(response)
     };
 
     get_currentAnime();
