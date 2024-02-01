@@ -37,7 +37,7 @@ app.get('/api/anime_list', async (req, res) => {
     }
   });
 
-  app.use('/api/searched_anime', async (req, res) => {
+  app.get('/api/searched_anime', async (req, res) => {
     try {
       const { anime_name } = req.body;
       console.log(anime_name)
