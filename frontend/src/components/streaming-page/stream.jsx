@@ -13,14 +13,19 @@ const StreamingPage = ({ animeList }) => {
     const get_currentAnime = async () => {
       const response = await animeList.find(
         (anime) =>
+          anime.episode_player_links &&
+          anime.episode_player_links.length > 0 &&
           anime.episode_player_links[anime.episode_player_links.length - 1]
-            .episode_num === animeTitleEp
+            .episode_num == animeTitleEp
       );
+      console.log(response);
       setCurrentAnime(response);
     };
+    
 
     get_currentAnime();
   }, [animeList, animeTitleEp]);
+
 
   useEffect(() => {
     if (currentAnime) {
@@ -32,11 +37,7 @@ const StreamingPage = ({ animeList }) => {
       setIsLoading(false);
     }
   }, [currentAnime]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
+  
   const handleChangeEpisode = (e) => {
     const new_iframe = currentAnime.episode_player_links.find((episode) => (episode.episode_num.split("-").pop() == e)).iframe_link
     setIframe(new_iframe);

@@ -35,12 +35,19 @@ const AnimeDetails = ({animeList}) => {
     anime_image = `https` + img[2]
   }
 
-  // console.log(currentAnime.episode_player_links[currentAnime.episode_player_links.length -1].episode_num)
   const watchAnime = () => {
-    const watch_url = currentAnime.episode_player_links[currentAnime.episode_player_links.length -1].episode_num
-    const encoded_watch_url = encodeURIComponent(watch_url)
-    navigate(`/play/${encoded_watch_url}`);
+    if (currentAnime && currentAnime.episode_player_links) {
+      const watch_url =
+        currentAnime.episode_player_links[
+          currentAnime.episode_player_links.length - 1
+        ].episode_num;
+      const encoded_watch_url = encodeURIComponent(watch_url);
+      navigate(`/play/${encoded_watch_url}`);
+    } else {
+      console.error("Current anime or episode links are undefined.");
+    }
   };
+  
 
   return (
     <div className="details">

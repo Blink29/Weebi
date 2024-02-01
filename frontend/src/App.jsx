@@ -22,8 +22,8 @@ function App() {
         const res = await axios.get('anime_list', {
           params: {
             sortBy: '_id',
-            sortOrder: 'desc',
-            limit: 100
+            sortOrder: 'asc',
+            limit: 1000
           }
         });
         setAnimeList(res.data);
