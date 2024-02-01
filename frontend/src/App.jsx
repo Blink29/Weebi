@@ -3,30 +3,46 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import './App.css'
 
-import axios from 'axios'
+import axios from './api/axios'
+
 import AnimeCard from './components/anime-card/card'
 import AnimeDetails from './components/anime-details/details'
 import StreamingPage from './components/streaming-page/stream'
 import Header from './components/header/header'
+import Home from './components/home/home'
 
 
 function App() {
+
   const [animeList, setAnimeList] = useState([])
 
   useEffect(() => {
     const fetchAnimeList = async () => {
-      const res = await axios.get('http://localhost:9000/api/anime_list')
-      setAnimeList(res.data)
-      console.log(res.data)
-    }
+      try {
+        const res = await axios.get('anime_list', {
+          params: {
+            sortBy: '_id',
+            sortOrder: 'desc',
+            limit: 100
+          }
+        });
+        setAnimeList(res.data);
+      } catch (error) {
+        console.error('Error fetching anime list:', error);
+      }
+    };
+    
     fetchAnimeList();
-  }, [animeList])
+
+  }, [])
 
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
-        <Route path="/" element={<Header />} />
-        {/* <Route path="/anime/:animeName" element={<AnimeDetails animeList={animeList}/>} /> */}
+        <Route path="/" element={<Home animeList={animeList}/>} />
+        <Route path="/:animeTitle" element={<AnimeDetails animeList={animeList}/>} />
+        <Route path="/play/:animeTitleEp" element={<StreamingPage animeList={animeList}/>} />
       </Routes>
     </BrowserRouter>
   )

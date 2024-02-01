@@ -11,11 +11,18 @@
         height: 200px;
         font-size: 1.25rem;
         width: 250px;
+        overflow-y: auto;
+
+        div:hover {
+            background-color: #f5f5f5;
+        }
     }
 
     .streaming-screen {
-        height: 600px;
         width: 800px;
         background-color: white;
     }
 }
+.streaming-screen iframe {
+    border: none;
+  }
