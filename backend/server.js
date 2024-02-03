@@ -59,6 +59,8 @@ app.get('/api/anime_list', async (req, res) => {
     }
   })
 
+  // app.get()
+
 db.once('open', async() => {
     console.log('MongoDB database connection established successfully!');
     app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`));

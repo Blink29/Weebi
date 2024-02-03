@@ -1,24 +1,33 @@
 import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'
+import { useAnimeContext } from '../../context/animeContext'
+
 import './details.scss'
 
-import { useNavigate, useParams } from 'react-router-dom'
 
 const AnimeDetails = ({animeList}) => {
   const [currentAnime, setCurrentAnime] = useState(null);
   const [isLoading, setIsLoading] = useState(true); 
   const {animeTitle} = useParams()
   const navigate = useNavigate();
+  const {selectedAnimeId} = useAnimeContext()
+
+  console.log(selectedAnimeId)
 
   useEffect(() => {
     const get_currentAnime = async () => {
-      const response = await animeList.find(anime => anime.title.replace(/-/g, " ") === decodeURIComponent(animeTitle.replace(/-/g, " ")))
+      const response = await animeList.find(anime => anime.title === (animeTitle))
       setCurrentAnime(response)
       localStorage.setItem("currentAnime", JSON.stringify(response))
       setIsLoading(false)
     }
     get_currentAnime()
 
-  }, [animeList, animeTitle])
+  }, [animeList, animeTitle, selectedAnimeId])
+
+  useEffect(() => {
+    
+  }, [])
 
   if (isLoading) {
     return <div>Loading...</div>;
