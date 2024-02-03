@@ -10,6 +10,7 @@ import StreamingPage from "./components/streaming-page/stream";
 import Header from "./components/header/header";
 import Home from "./components/home/home";
 import { AnimeProvider } from "./context/animeContext";
+import Search from "./components/searched-anime/search";
 
 function App() {
   const [animeList, setAnimeList] = useState([]);
@@ -43,12 +44,13 @@ function App() {
           <Route path="/" element={<Home animeList={animeList} />} />
           <Route
             path="/:animeTitle"
-            element={<AnimeDetails animeList={animeList} />}
+            element={<AnimeDetails/>}
           />
           <Route
             path="/play/:animeTitleEp"
             element={<StreamingPage animeList={animeList} />}
           />
+          <Route path="/search" element={<Search />}/>
         </Routes>
       </AnimeProvider>
     </BrowserRouter>

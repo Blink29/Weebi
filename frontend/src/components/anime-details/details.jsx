@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import { useAnimeContext } from '../../context/animeContext'
 
 import './details.scss'
@@ -7,10 +7,9 @@ import './details.scss'
 import axios from '../../api/axios';
 
 
-const AnimeDetails = ({animeList}) => {
+const AnimeDetails = () => {
   const [currentAnime, setCurrentAnime] = useState(null);
   const [isLoading, setIsLoading] = useState(true); 
-  const {animeTitle} = useParams()
   const navigate = useNavigate();
   const {selectedAnimeId} = useAnimeContext()
 

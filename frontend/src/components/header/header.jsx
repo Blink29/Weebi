@@ -14,12 +14,13 @@ const Header = () => {
 
   const handleSearchAnime = async (event) => {
     event.preventDefault();
-    const res = await axios('searched_anime', {
-      params: {
-        anime_name: searchAnime
-      }
-    })
-    console.log(res.data);
+    // const res = await axios('searched_anime', {
+    //   params: {
+    //     anime_name: searchAnime
+    //   }
+    // })
+    // console.log(res.data);
+    naviagate(`search?q=${encodeURIComponent(searchAnime)}`);
     setSearchAnime(" ");
   }
 
