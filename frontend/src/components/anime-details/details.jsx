@@ -13,19 +13,6 @@ const AnimeDetails = () => {
   const navigate = useNavigate();
   const {selectedAnimeId} = useAnimeContext()
 
-  // console.log(selectedAnimeId)
-
-  // useEffect(() => {
-  //   const get_currentAnime = async () => {
-  //     const response = await animeList.find(anime => anime.title === (animeTitle))
-  //     setCurrentAnime(response)
-  //     localStorage.setItem("currentAnime", JSON.stringify(response))
-  //     setIsLoading(false)
-  //   }
-  //   get_currentAnime()
-
-  // }, [animeList, animeTitle, selectedAnimeId])
-
   useEffect(() => {
     const get_currentAnime = async () => {
       const response = await axios.get('anime/id', {
@@ -75,6 +62,10 @@ const AnimeDetails = () => {
       console.error("Current anime or episode links are undefined.");
     }
   };
+
+  const watch_anime = () => {
+    
+  }
   
 
   return (

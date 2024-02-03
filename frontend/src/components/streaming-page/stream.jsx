@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import "./stream.scss";
 import { useEffect, useState } from "react";
+import { useAnimeContext } from "../../context/animeContext";
 
 const StreamingPage = ({ animeList }) => {
   const { animeTitleEp } = useParams();
@@ -8,23 +9,30 @@ const StreamingPage = ({ animeList }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [epsiodeNumber, setEpisodeNumber] = useState(1);
   const [iframe, setIframe] = useState(null);
+  const {selectedAnimeId} = useAnimeContext();
 
   useEffect(() => {
-    const get_currentAnime = async () => {
-      const response = await animeList.find(
-        (anime) =>
-          anime.episode_player_links &&
-          anime.episode_player_links.length > 0 &&
-          anime.episode_player_links[anime.episode_player_links.length - 1]
-            .episode_num == animeTitleEp
-      );
-      console.log(response);
-      setCurrentAnime(response);
-    };
+    const currentAnime = JSON.parse(localStorage.getItem("currentAnime"))
+    setCurrentAnime(currentAnime)
+    setIsLoading(false)
+  }, [])
+
+  // useEffect(() => {
+  //   const get_currentAnime = async () => {
+  //     const response = await animeList.find(
+  //       (anime) =>
+  //         anime.episode_player_links &&
+  //         anime.episode_player_links.length > 0 &&
+  //         anime.episode_player_links[anime.episode_player_links.length - 1]
+  //           .episode_num == animeTitleEp
+  //     );
+  //     console.log(response);
+  //     setCurrentAnime(response);
+  //   };
     
 
-    get_currentAnime();
-  }, [animeList, animeTitleEp]);
+  //   get_currentAnime();
+  // }, [animeList, animeTitleEp]);
 
 
   useEffect(() => {

@@ -9,7 +9,6 @@ const Search = () => {
     const [searchedAnime, setSearchedAnime] = useState([]);
     const location = useLocation();
     const seachedAnimeTitle = decodeURIComponent(new URLSearchParams(location.search).get('q'));
-    console.log(seachedAnimeTitle)
 
     useEffect(() => {
         const fetchSearchedAnime = async () => {
