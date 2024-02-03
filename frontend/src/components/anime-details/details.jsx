@@ -4,6 +4,8 @@ import { useAnimeContext } from '../../context/animeContext'
 
 import './details.scss'
 
+import axios from '../../api/axios';
+
 
 const AnimeDetails = ({animeList}) => {
   const [currentAnime, setCurrentAnime] = useState(null);
@@ -12,21 +14,39 @@ const AnimeDetails = ({animeList}) => {
   const navigate = useNavigate();
   const {selectedAnimeId} = useAnimeContext()
 
-  console.log(selectedAnimeId)
+  // console.log(selectedAnimeId)
+
+  // useEffect(() => {
+  //   const get_currentAnime = async () => {
+  //     const response = await animeList.find(anime => anime.title === (animeTitle))
+  //     setCurrentAnime(response)
+  //     localStorage.setItem("currentAnime", JSON.stringify(response))
+  //     setIsLoading(false)
+  //   }
+  //   get_currentAnime()
+
+  // }, [animeList, animeTitle, selectedAnimeId])
 
   useEffect(() => {
     const get_currentAnime = async () => {
-      const response = await animeList.find(anime => anime.title === (animeTitle))
-      setCurrentAnime(response)
-      localStorage.setItem("currentAnime", JSON.stringify(response))
-      setIsLoading(false)
+      const response = await axios.get('anime/id', {
+        params: {
+          _id: selectedAnimeId
+        }
+      })
+      const anime = response.data
+      setCurrentAnime(anime);
+      localStorage.setItem("currentAnime", JSON.stringify(anime));
+      setIsLoading(false);
     }
-    get_currentAnime()
 
-  }, [animeList, animeTitle, selectedAnimeId])
+    get_currentAnime();
+  }, [selectedAnimeId])
 
   useEffect(() => {
-    
+    const currentAnime = JSON.parse(localStorage.getItem("currentAnime"))
+    setCurrentAnime(currentAnime)
+    setIsLoading(false)
   }, [])
 
   if (isLoading) {

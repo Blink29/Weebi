@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const { ObjectId } = require('mongodb');
 
 const app = express();
 
@@ -59,7 +60,26 @@ app.get('/api/anime_list', async (req, res) => {
     }
   })
 
-  // app.get()
+  app.get('/api/anime/id', async (req, res) => {
+    try {
+      const { _id } = req.query;
+      if (!_id) {
+        return res.status(400).json({ error: 'Missing id parameter' });
+      }
+  
+      const objectId = new ObjectId(_id);
+      const anime = await animeListCollection.findOne({ _id: objectId });
+
+      if (!anime) {
+        return res.status(404).json({ error: 'Anime not found' });
+      }
+  
+      res.status(200).json(anime);
+    } catch (error) {
+      console.error('Error fetching anime by id:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
 
 db.once('open', async() => {
     console.log('MongoDB database connection established successfully!');
