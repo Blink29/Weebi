@@ -39,9 +39,7 @@ app.get('/api/anime_list', async (req, res) => {
 
   app.get('/api/searched_anime', async (req, res) => {
     try {
-      const { anime_name } = req.body;
-      console.log(anime_name)
-  
+      const { anime_name } = req.query;  
       if (!anime_name) {
         return res.status(400).json({ error: 'Missing anime_name parameter' });
       }
