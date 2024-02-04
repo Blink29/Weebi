@@ -21,7 +21,7 @@ const Header = () => {
     // })
     // console.log(res.data);
     naviagate(`search?q=${encodeURIComponent(searchAnime)}`);
-    setSearchAnime(" ");
+    setSearchAnime("");
   }
 
   return (
